@@ -10,9 +10,11 @@ frequency of the key value)
   + right child has greater key value than the node itself
 - Every parent node has greater frequency value than all of its children.
 You will implement this in two different ways.
+
 a) Offline version:
 - Your program will construct this tree using a given input file that contains key values
 and corresponding frequency values.
+
 b) Online version:
 - Your program will construct the tree using a given input file that contains key values
 (like normal BST). At the beginning frequency values of each nodes will be 0.
