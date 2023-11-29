@@ -47,6 +47,13 @@ else if(key > root->key){
 }
 };
 
+void preorderTraversal(struct node* root){
+    if(root==NULL) return;
+    printf("%d ",root->key);
+    preorderTraversal(root->left);
+    preorderTraversal(root->right);
+}
+
 int main(){
 FILE *fptr;
 int key, frequency, searchvalue;
