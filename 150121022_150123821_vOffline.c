@@ -80,16 +80,6 @@ void addNodeBySequence(int key, int frequency){
         }
     }
 }
-/*
-void printLL(tempNode* head){
-    tempNode * current = head;
-    while(current->next != NULL){
-        printf("(%d,%d)=>",current->key,current->frequency);
-        current = current->next;
-    }
-    printf("(%d,%d)",current->key,current->frequency);
-}
-*/
 /* END OF LINKED LIST PART */
 
 
