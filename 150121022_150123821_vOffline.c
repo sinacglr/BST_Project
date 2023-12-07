@@ -23,43 +23,16 @@ tempNode* createTempNode(int key, int frequency){
     return newNode;
 }
 
-// Add linked list node to begin of the linked list.
-void addAtBegin(int key, int frequency){
-    tempNode* newNode = createTempNode(key,frequency);
-    if(HEAD == NULL){
-        HEAD = newNode;
-    }
-    else{
-        newNode->next = HEAD;
-        HEAD = newNode;
-    }
-}
-
-// Add linked list node to end of the linked list.
-void addAtEnd(int key, int frequency){
-    tempNode * newNode = createTempNode(key,frequency);
-    if(HEAD == NULL){
-        HEAD = newNode;
-    }
-    else{
-        // Declare temporary current variable to traverse the linked list.
-        tempNode * current = HEAD;
-        while(current->next != NULL){
-            current = current->next;
-        }
-        current->next = newNode;
-    }
-}
-
 // Add linked list nodes by descending order.
 void addNodeBySequence(int key, int frequency){
     tempNode * newNode = createTempNode(key,frequency);
     if(HEAD == NULL){
         HEAD = newNode;
     }
-    // Add linked list node at begin using addAtBegin function.
+    // Add linked list node at begin.
     if(HEAD->frequency < newNode->frequency){
-        addAtBegin(key,frequency);
+        newNode->next = HEAD;
+        HEAD = newNode;
     }
     else{
         // Declare temporary current variable to traverse the linked list.
@@ -74,14 +47,19 @@ void addNodeBySequence(int key, int frequency){
                 current = current->next;
             }
         }
-        // Add linked list node at end using addAtEnd function.
+        // Add linked list node at end.
         if(current->frequency > newNode->frequency && current->next == NULL){
-            addAtEnd(key,frequency);
+            // Declare temporary current variable to traverse the linked list.
+            tempNode* current = HEAD;
+            while(current->next != NULL){
+                current = current->next;
+            }
+            current->next = newNode;
         }
     }
 }
-/* END OF LINKED LIST PART */
 
+/* END OF LINKED LIST PART */
 
 /* BINARY SEARCH TREE PART */
 // Struct of node of BST containing key value, frequency value and children pointers.
