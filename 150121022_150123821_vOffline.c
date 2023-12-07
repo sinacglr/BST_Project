@@ -77,7 +77,8 @@ Node *createNode(int key, int frequency)
     Node *node = (Node*)malloc(sizeof(Node));
     node->key = key;
     node->frequency = frequency;
-    node->left = node->right = NULL;
+    node->left = NULL;
+    node->right = NULL;
     return node;
 };
 
