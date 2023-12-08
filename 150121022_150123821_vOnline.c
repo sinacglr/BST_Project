@@ -53,32 +53,46 @@ else{
 };
 
 void rotation(Node *root){
-Node* temp = NULL;
+if(root == NULL){
+    return;
+}
 if(root->left != NULL && root->left->frequency > root->frequency){
     rightRotation(root);
 }
 
-else if(root->left != NULL && root->right->frequency > root->frequency){
+else if(root->right != NULL && root->right->frequency > root->frequency){
     leftRotation(root);
 }
+
+if(root->left != NULL && root->frequency == root->left->frequency){
+    rotation(root->left);
+}
+if(root->right != NULL && root->frequency == root->right->frequency){
+    rotation(root->right);
+}
+
 };
 
-void rightRotation(Node* root){
-    if(root == NULL){
+void rightRotation(Node** root){
+    if (*root == NULL || (*root)->left == NULL) {
         return;
     }
-    root = root->left;
-    root->right=root;
-    rightRotation(root->left);
+
+    Node* temp = (*root)->left;
+    (*root)->left = temp->right;
+    temp->right = *root;
+    *root = temp;
 };
 
-void leftRotation(Node* root){
-    if(root == NULL){
+void leftRotation(Node** root){
+    if (*root == NULL || (*root)->right == NULL) {
         return;
     }
-    root = root->right;
-    root->left=root;
-    leftRotation(root->right);
+
+    Node* temp = (*root)->right;
+    (*root)->right = temp->left;
+    temp->left = *root;
+    *root = temp;
 };
 
 
