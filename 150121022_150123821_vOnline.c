@@ -68,12 +68,14 @@ Node* rotation(Node *root){
         root->left = temp->right;
         temp->right = root;
         root = temp;
+        return root;
     }
     else if(root->right != NULL && root->right->frequency > root->frequency){
         Node* temp = root->right;
         root->right = temp->left;
         temp->left = root;
         root = temp;
+        return root;
     }
     if(root->left != NULL && root->frequency == root->left->frequency){
         rotation(root->left);
