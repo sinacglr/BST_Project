@@ -9,127 +9,100 @@ typedef struct node
     struct node *right;
 } Node;
 
+// Create BST node using createNode function.
 Node *createNode(int key, int frequency)
 {
     Node *node = (Node*)malloc(sizeof(Node));
     node->key = key;
     node->frequency = frequency;
-    node->left = node->right = NULL;
+    node->left = NULL;
+    node->right = NULL;
     return node;
 };
 
+// Insert nodes to BST by not violating BST rules recursively.
 Node *insert(Node *root, int key, int frequency){
-if (root == NULL)
-    {
-        return createNode(key, frequency);
-    }
-
-    if (key < root->key)
+    Node* newNode = createNode(key,frequency);
+    if (root == NULL) root = newNode;
+    else if (key < root->key)
     {
         root->left = insert(root->left, key, frequency);
     }
-    else if (key > root->key)
+    else
     {
         root->right = insert(root->right, key, frequency);
     }
     return root;
 };
 
-void search(Node *root, int key){
-
-if(root == NULL){
-    return;
-}
-if(key == root->key){
-    root->frequency++;
-}
-
-if(key < root->key){
-    search(root->left, key);
-}
-else{
-    search(root->right, key);
-}
-};
-
-void rotation(Node *root){
-if(root == NULL){
-    return;
-}
-if(root->left != NULL && root->left->frequency > root->frequency){
-    rightRotation(root);
-}
-
-else if(root->right != NULL && root->right->frequency > root->frequency){
-    leftRotation(root);
-}
-
-if(root->left != NULL && root->frequency == root->left->frequency){
-    rotation(root->left);
-}
-if(root->right != NULL && root->frequency == root->right->frequency){
-    rotation(root->right);
-}
-
-};
-
-void rightRotation(Node** root){
-    if (*root == NULL || (*root)->left == NULL) {
-        return;
-    }
-
-    Node* temp = (*root)->left;
-    (*root)->left = temp->right;
-    temp->right = *root;
-    *root = temp;
-};
-
-void leftRotation(Node** root){
-    if (*root == NULL || (*root)->right == NULL) {
-        return;
-    }
-
-    Node* temp = (*root)->right;
-    (*root)->right = temp->left;
-    temp->left = *root;
-    *root = temp;
-};
-
-
-
+// Print nodes according to preorder traversal of the tree recursively.
 void preorderTraversal(Node* root){
     if(root==NULL) return;
-    printf("(%d,",root->key);
-    printf("%d),", root->frequency);
+    printf("(%d,%d), ",root->key,root->frequency);
     preorderTraversal(root->left);
     preorderTraversal(root->right);
-};
-
-
-int main(){
-FILE *fptr;
-int key, frequency, searchvalue;
-Node *root = NULL;
-
-fptr = fopen("input2.txt", "r");
-while(fscanf(fptr, "%d", &key) == 1)
-{
-  root = insert(root, key, 0);
 }
-fclose(fptr);
 
-printf("Pre-order traversal of constructed tree: ");
-preorderTraversal(root);
-printf("\n");
-
-while(1){
-printf("\nEnter a value to search: ");
-scanf("%d", &searchvalue);
-search(root, searchvalue);
-rotation(root);
-printf("Pre-order traversal of constructed tree: ");
-preorderTraversal(root);
-printf("\n");
+void searchInTree(Node* root,int num){
+    if(root == NULL){
+        printf("The number %d not contained in the tree...\n",num);
+        return;
+    }
+    else if(root->key == num){
+        root->frequency++;
+    }
+    else if(root->key > num){
+        searchInTree(root->left,num);
+    }
+    else{
+        searchInTree(root->right,num);
+    }
 }
-return 0;
+
+Node* rotation(Node *root){
+    if(root == NULL){
+        return root;
+    }
+    if(root->left != NULL && root->left->frequency > root->frequency){
+        Node* temp = root->left;
+        root->left = temp->right;
+        temp->right = root;
+        root = temp;
+    }
+    else if(root->right != NULL && root->right->frequency > root->frequency){
+        Node* temp = root->right;
+        root->right = temp->left;
+        temp->left = root;
+        root = temp;
+    }
+    if(root->left != NULL && root->frequency == root->left->frequency){
+        rotation(root->left);
+    }
+    if(root->right != NULL && root->frequency == root->right->frequency){
+        rotation(root->right);
+    }
+    return root;
+}
+
+int main(int argc, char* argv[]){
+    FILE *fptr = fopen(argv[argc-1],"r");
+    int key;
+    Node* root = NULL;
+    if(fptr == NULL) printf("The file does not exist!!!");
+    else{
+        while(fscanf(fptr,"%d",&key) == 1){
+            root = insert(root,key,0);
+        }
+    }
+    fclose(fptr);
+    while(1==1){
+        printf("Pre-order traversal of constructed tree: ");
+        preorderTraversal(root);
+        printf("\n");
+        printf("Enter a value to search: ");
+        scanf("%d",&key);
+        searchInTree(root,key);
+        root = rotation(root);
+    }
+
 }
