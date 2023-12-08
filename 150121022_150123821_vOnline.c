@@ -68,10 +68,14 @@ Node* rotation(Node *root){
     if(root == NULL){
         return root;
     }
+    // Compare frequency value of parent node with each of its child node.
+    // Apply right or left rotation.
     if(root->left != NULL && root->left->frequency > root->frequency){
         Node* temp = root->left;
+        // Rearrange the nodes for the new BST.
         root->left = temp->right;
         temp->right = root;
+        // Finally the node with the higher frequency is moved up.
         root = temp;
     }
     else if(root->right != NULL && root->right->frequency > root->frequency){
@@ -80,6 +84,8 @@ Node* rotation(Node *root){
         temp->left = root;
         root = temp;
     }
+
+    // All parent nodes must be checked recursively.
     if(root->left != NULL && root->frequency == root->left->frequency){
         rotation(root->left);
     }
